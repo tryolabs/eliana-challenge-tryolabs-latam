@@ -3,10 +3,15 @@ name: 'Continuous Integration'
 on:
   push:
     branches:
-      - '*'
+      - 'feature/*'
+      - 'hotfix/*'
+      - 'release/*'
+      - 'develop'
+      - 'main'
   pull_request:
     branches:
-      - '*'
+      - 'develop'
+      - 'main'
 
 jobs:
   test:
