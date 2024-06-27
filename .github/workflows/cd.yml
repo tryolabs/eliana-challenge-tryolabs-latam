@@ -75,4 +75,6 @@ jobs:
           pip install -r requirements-test.txt
 
       - name: Run stress test
+        env:
+            STRESS_URL: ${{ needs.deploy.outputs.url }}
         run: make stress-test STRESS_URL=${{ env.STRESS_URL}}
