@@ -21,6 +21,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
       
+      - name: Print environment variables (debugging)
+        run: |
+          echo "PROJECT_ID=${{ env.PROJECT_ID }}"
+          echo "SERVICE_ACCOUNT_KEY=${{ env.SERVICE_ACCOUNT_KEY }}" | head -c 20
+      
+      
       - name: Set up Google Cloud SDK
         uses: google-github-actions/setup-gcloud@v0.2.0
         with:
