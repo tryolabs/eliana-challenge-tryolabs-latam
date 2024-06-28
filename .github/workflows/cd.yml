@@ -59,7 +59,7 @@ jobs:
             --platform managed \
             --region ${{ env.REGION }} \
             --allow-unauthenticated \
-            --format 'value(status.url)')
+            --format 'value(status.url)')\
             --set-env-vars GCS_BUCKET=${{ secrets.GCS_BUCKET }}
             echo "url=$URL" >> $GITHUB_OUTPUT
             echo "Deployed to $URL"
