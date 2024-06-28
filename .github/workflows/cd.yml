@@ -17,20 +17,16 @@ jobs:
       GCS_BUCKET: ${{ secrets.GCS_BUCKET }}
       APP_NAME: 'flight-delay-api'
       REGION: 'us-central1'
-    
-
-    outputs:
-      url: ${{ steps.deploy.outputs.url }}
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
       
-      - name: Print environment variables (debugging)
+      - name: Install dependencies
         run: |
-          echo "PROJECT_ID=${{ env.PROJECT_ID }}"
-          echo "SERVICE_ACCOUNT_KEY=${{ env.SERVICE_ACCOUNT_KEY }}" | head -c 20
-          echo "GCS_BUCKET=${{ env.GCS_BUCKET }}"
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install -r requirements-test.txt
       
       - name: Set up Google Cloud SDK
         uses: google-github-actions/setup-gcloud@v0.2.0
@@ -67,22 +63,6 @@ jobs:
       - name: Set STRESS_URL for Makefile
         run: echo "STRESS_URL=${{steps.deploy.outputs.url}}" >> $GITHUB_ENV
       
-  stress-test:
-    runs-on: ubuntu-latest
-    needs: deploy
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
-          pip install -r requirements-test.txt
-      - name: Print STRESS_URL (debugging)
-        run: echo "STRESS_URL=${{ needs.deploy.outputs.url }}"
       - name: Run stress test
-        env:
-          STRESS_URL: ${{ needs.deploy.outputs.url }}
         run: |
           make stress-test STRESS_URL=${{ env.STRESS_URL}}
