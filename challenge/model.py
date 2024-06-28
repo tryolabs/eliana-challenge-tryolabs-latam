@@ -15,7 +15,7 @@ from google.cloud import storage
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-LOCAL_MODEL_PATH = "challenge/models/model.pkl"
+LOCAL_MODEL_PATH = "model.pkl"
 DATE_FORMAT = "%Y-%m-%d %H:%M:%S"
 THRESHOLD_IN_MINUTES = 15
 GCS_MODEL_PATH = "model.pkl"
