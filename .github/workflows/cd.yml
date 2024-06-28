@@ -54,7 +54,7 @@ jobs:
             --region ${{ env.REGION }} \
             --allow-unauthenticated \
             --format 'value(status.url)')
-            echo "::set-output name=url::$URL"
+            echo "url=$URL" >> $GITHUB_OUTPUT
             echo "Deployed to $URL"
 
       - name: Set STRESS_URL for Makefile
@@ -73,7 +73,8 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
           pip install -r requirements-test.txt
-
+      - name: Print STRESS_URL (debugging)
+        run: echo "STRESS_URL=${{ needs.deploy.outputs.url }}"
       - name: Run stress test
         env:
             STRESS_URL: ${{ needs.deploy.outputs.url }}
