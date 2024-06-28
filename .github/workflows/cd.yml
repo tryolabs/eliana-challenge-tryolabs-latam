@@ -14,6 +14,7 @@ jobs:
     env:
       PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
       SERVICE_ACCOUNT_KEY: ${{ secrets.GCP_SA_KEY }}
+      GCS_BUCKET: ${{ secrets.GCS_BUCKET }}
       APP_NAME: 'flight-delay-api'
       REGION: 'us-central1'
     
@@ -29,7 +30,7 @@ jobs:
         run: |
           echo "PROJECT_ID=${{ env.PROJECT_ID }}"
           echo "SERVICE_ACCOUNT_KEY=${{ env.SERVICE_ACCOUNT_KEY }}" | head -c 20
-      
+          echo "GCS_BUCKET=${{ env.GCS_BUCKET }}"
       
       - name: Set up Google Cloud SDK
         uses: google-github-actions/setup-gcloud@v0.2.0
@@ -59,6 +60,7 @@ jobs:
             --region ${{ env.REGION }} \
             --allow-unauthenticated \
             --format 'value(status.url)')
+            --set-env-vars GCS_BUCKET=${{ secrets.GCS_BUCKET }}
             echo "url=$URL" >> $GITHUB_OUTPUT
             echo "Deployed to $URL"
       
